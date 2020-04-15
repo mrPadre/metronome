@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Метроном</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+</head>
+<body>
+    <h1 class="title">Loud Metronome</h1>
+    <div class="underline" id="underline"></div>
+<div class="content">
+    <div class="half_part">
+        <canvas class="visual" id="canvas"> </canvas>
+        <h3 class="song_title">Songs</h3>
+        <div class="song_list" id="song_list">
+
+        </div>
+    </div>
+    <div class="half_part">
+        <div class="control_panel" id="cPanel">
+            <div class="volume-box">
+            <label for="volume">Volume</label>
+            <input type="range"
+                   class="volume"
+                   min="0" max="10"
+                   step="0.1"
+                   aria-label="volume"
+                   id="volume"
+                   value="0.5"
+                   oninput="mySynth.changeGain()">
+        </div>
+            <div class="tone_box" id="tone-box">
+            </div>
+        </div>
+        <div class="bpm">
+            <div class="navigate top">
+                <a class="arr_btn up" id="up">
+                    &#10148;
+                </a>
+            </div>
+            <div class="navigate middle">
+                <a class="arr_btn left" id="left">
+                    &#10148;
+                </a>
+                <div class="bpm_window" id="bpm_window"></div>
+                <a class="arr_btn right" id="right">
+                    &#10148;
+                </a>
+            </div>
+            <div class="navigate bottom">
+                <a class="arr_btn down" id="down">
+                    &#10148;
+                </a>
+            </div>
+            <div class="buttons">
+                <button id="start" class="start">Start</button>
+                <button id="stop" class="stop">Stop</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="constants.js"></script>
+<script src="tone.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
