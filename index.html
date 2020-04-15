@@ -17,13 +17,12 @@
         <canvas class="visual" id="canvas"> </canvas>
         <h3 class="song_title">Songs</h3>
         <div class="song_list" id="song_list">
-
         </div>
     </div>
     <div class="half_part">
         <div class="control_panel" id="cPanel">
             <div class="volume-box">
-            <label for="volume">Volume</label>
+                <label for="volume">Volume <span id="volume_number"></span></label>
             <input type="range"
                    class="volume"
                    min="0" max="10"
@@ -33,8 +32,8 @@
                    value="0.5"
                    oninput="mySynth.changeGain()">
         </div>
-            <div class="tone_box" id="tone-box">
-            </div>
+            <div class="tone_box" id="tone-box"></div>
+            <div class="size-box" id="music_size_box"></div>
         </div>
         <div class="bpm">
             <div class="navigate top">
@@ -52,13 +51,16 @@
                 </a>
             </div>
             <div class="navigate bottom">
+                <button id="start" class="btn start">Start</button>
                 <a class="arr_btn down" id="down">
                     &#10148;
                 </a>
+                <button id="stop" class="btn stop">Stop</button>
             </div>
+
             <div class="buttons">
-                <button id="start" class="start">Start</button>
-                <button id="stop" class="stop">Stop</button>
+
+
             </div>
         </div>
     </div>

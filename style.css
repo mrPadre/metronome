@@ -168,13 +168,14 @@ input[type=range]:focus::-ms-fill-upper {
     width: 80%;
     height: 200px;
     color: white;
+    font-family: "Arial Black";
     overflow-y: auto;
     scrollbar-width: none;
 }
 .song_list::-webkit-scrollbar { width: 0; }
 .control_panel {
     width: 100%;
-    height: 200px;
+
 }
 .bpm {
     width: 100%;
@@ -194,39 +195,32 @@ input[type=range]:focus::-ms-fill-upper {
     justify-content: center;
     border-radius: 50%;
     border: 1px solid #2aec2a;
-    background-image:-moz-radial-gradient(center bottom, circle cover, white 20%, #2aec2a 80%);
-    background-image:-webkit-radial-gradient(center bottom, circle cover, white 20%, #2aec2a 80%);
-    background-image:-o-radial-gradient(center bottom, circle cover, white 20%, #2aec2a 80%);
+    background-color: #2aec2a;
     color: black;
     font-size: 50px;
 }
-.start {
+
+.btn {
     border-radius: 20px;
-    background-color: #2aec2a;
     width: 150px;
     height: 40px;
     border: 1px solid #2aec2a;
     cursor: pointer;
     font-size: 20px;
-    margin: 10px;
     outline: none;
     color: black;
     box-shadow: 1px 1px 1px 1px white;
     font-family: 'Permanent Marker';
 }
-.stop {
-    border-radius: 20px;
-    width: 150px;
-    height: 40px;
-    color: black;
-    border: 1px solid #2aec2a;
-    cursor: pointer;
-    font-size: 20px;
-    margin: 10px;
-    outline: none;
-    box-shadow: 1px 1px 1px 1px #2aec2a;
-    font-family: 'Permanent Marker';
 
+.start {
+    background-color: #2aec2a;
+    margin-right: 30px;
+    margin-top: 30px;
+}
+.stop {
+    margin-left: 30px;
+    margin-top: 30px;
 }
 .buttons {
     width: 100%;
@@ -234,6 +228,14 @@ input[type=range]:focus::-ms-fill-upper {
     align-items: center;
     justify-content: center;
     margin: 20px 0;
+}
+
+.size-box {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-around;
 }
 .song {
    display: flex;
@@ -275,6 +277,21 @@ input[type=range]:focus::-ms-fill-upper {
 .select {
     border-color: #2aec2a;
     background-color: #2aec2a;
+}
+
+@media (min-width: 1700px) {
+    .content {
+
+    }
+    .half_part {
+
+    }
+    .control_panel {
+        height: 30vh;
+    }
+    .song_list {
+        height: 45vh;
+    }
 }
 
 @media (max-width: 900px) {

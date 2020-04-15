@@ -4,16 +4,16 @@ class MainSynth {
         this.synth = new Tone.MembraneSynth(
             {
                 pitchDecay : 0.05 ,
-                octaves : 10 ,
+                octaves : 5 ,
                 oscillator : {
                     type : 'sine'
                 }
                 ,
                 envelope : {
-                    attack : 0.000001 ,
-                    decay : 0.4 ,
-                    sustain : 0.0001 ,
-                    release : 1.4 ,
+                    attack : 0.01 ,
+                    decay : 0.04,
+                    sustain : 0.3 ,
+                    release : 0.03 ,
                     attackCurve : 'exponential'
                 }
             }
@@ -22,24 +22,77 @@ class MainSynth {
         this.seq = null;
         this.note = ['c3', 'g3', 'g3', 'g3'];
         this.tempo = 80;
-        this.select = 0;
+        this.select = 2;
+        this.size = '4n';
+        this.selectSize = 1;
         this.gain = new Tone.Gain(0.5).toMaster();
     }
 
     changeNote (newNote, select)  {
-        this.note = newNote.noteArr4;
-        this.select = select;
-        Tone.Transport.stop();
-        this.render();
-        Tone.Transport.start();
+        if (this.selectSize === 0 || this.selectSize === 3){
+            this.note = newNote.noteArr3;
+            this.select = select;
+            Tone.Transport.stop();
+            this.render();
+            Tone.Transport.start();
+        }else if (this.selectSize === 1){
+            this.note = newNote.noteArr4;
+            this.select = select;
+            Tone.Transport.stop();
+            this.render();
+            Tone.Transport.start();
+        }else if (this.selectSize === 2){
+            this.note = newNote.noteArr8;
+            this.select = select;
+            Tone.Transport.stop();
+            this.render();
+            Tone.Transport.start();
+        }
 
+
+    }
+
+    changeSize (size, select)  {
+        if (size.name === '3/4'){
+            Tone.Transport.timeSignature = 3;
+            this.note = ToneArr[this.select].noteArr3;
+            this.selectSize = select;
+            this.size = size.size;
+            Tone.Transport.stop();
+            this.render();
+            Tone.Transport.start();
+        }else if (size.name === '4/4'){
+            Tone.Transport.timeSignature = 4;
+            this.note = ToneArr[this.select].noteArr4;
+            this.selectSize = select;
+            this.size = size.size;
+            Tone.Transport.stop();
+            this.render();
+            Tone.Transport.start();
+        }else if (size.name === '8 th'){
+            Tone.Transport.timeSignature = 4;
+            this.note = ToneArr[this.select].noteArr8;
+            this.selectSize = select;
+            this.size = size.size;
+            Tone.Transport.stop();
+            this.render();
+            Tone.Transport.start();
+        }else if (size.name === 'triple'){
+            Tone.Transport.timeSignature = 4;
+            this.note = ToneArr[this.select].noteArr3;
+            this.selectSize = select;
+            this.size = size.size;
+            Tone.Transport.stop();
+            this.render();
+            Tone.Transport.start();
+        }
     }
 
     changeGain ()  {
         const volumeRange = document.getElementById('volume');
+        const volumeNumber = document.getElementById('volume_number');
+        volumeNumber.innerHTML =`x ${this.gain.gain.value}`;
         this.gain.gain.value = volumeRange.value;
-
-
     }
 
     setTempo (bpm) {
@@ -49,8 +102,8 @@ class MainSynth {
             Tone.Transport.start();
             this.render();
         }
-
     }
+
 
     changeTempo (simbol, value)  {
         Tone.Transport.stop();
@@ -62,6 +115,7 @@ class MainSynth {
         Tone.Transport.start();
         this.render();
     }
+
     render () {
         Tone.Transport.bpm.value = this.tempo;
         this.synth.connect(this.gain);
@@ -71,8 +125,9 @@ class MainSynth {
         }
 
         this.seq = new Tone.Sequence((time, note) => {
-            this.synth.triggerAttackRelease(note, '16n', time, 1);
+            this.synth.triggerAttackRelease(note, '8n', time);
             let currentBeat = Tone.Transport.position.split(':');
+            console.log(currentBeat);
             if (currentBeat[1] === '0'){
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 ctx.fillStyle = 'white';
@@ -102,9 +157,10 @@ class MainSynth {
                 ctx.fillStyle = 'white';
                 ctx.fillText('4', 110,120);
             }
-        }, this.note , '4n');
+        }, this.note , this.size);
 
         this.seq.start();
+
 
 
         const bpmWindow = document.getElementById('bpm_window');
@@ -112,6 +168,8 @@ class MainSynth {
 
         const toneBox = document.getElementById('tone-box');
         toneBox.innerHTML = '';
+        const sizeBox = document.getElementById('music_size_box');
+        sizeBox.innerHTML = '';
 
         ToneArr.map((item, index) => {
             let styleArr = ['radio'];
@@ -134,6 +192,28 @@ class MainSynth {
             });
         })
 
+        MusicSize.map((item, index) => {
+            let styleArr = ['radio'];
+            if (this.selectSize === index){
+                styleArr.push('select');
+            }
+            const sizeItem = document.createElement('div');
+            let sizeRadio = document.createElement('div');
+            let sizeLabel = document.createElement('p');
+            sizeItem.className = 'tone_item';
+            sizeRadio.type = 'radio';
+            sizeLabel.innerText = item.name;
+            sizeRadio.className = styleArr.join(' ');
+            sizeRadio.id = item.name;
+            sizeItem.appendChild(sizeLabel);
+            sizeItem.appendChild(sizeRadio);
+            sizeBox.appendChild(sizeItem);
+            sizeItem.addEventListener('click', () => {
+                this.changeSize(item, index);
+            });
+        })
+
+
     }
     start () {
         Tone.Transport.start();
@@ -147,6 +227,7 @@ class MainSynth {
     }
 }
 
+
 const start = document.getElementById('start');
 const stop = document.getElementById('stop');
 const left = document.getElementById('left');
@@ -155,6 +236,7 @@ const up = document.getElementById('up');
 const down = document.getElementById('down');
 const songs = document.getElementById('song_list');
 const bpmWindow = document.getElementById('bpm_window');
+
 
 bpmWindow.addEventListener('click', () => tapMetronome());
 
