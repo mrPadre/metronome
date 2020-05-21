@@ -3,7 +3,7 @@ class MainSynth {
     constructor () {
         this.synth = new Tone.MembraneSynth(
             {
-                pitchDecay : 0.05 ,
+                pitchDecay : 0.0005 ,
                 octaves : 5 ,
                 oscillator : {
                     type : 'sine'
@@ -12,8 +12,8 @@ class MainSynth {
                 envelope : {
                     attack : 0.01 ,
                     decay : 0.04,
-                    sustain : 0.3 ,
-                    release : 0.03 ,
+                    sustain : 0.1 ,
+                    release : 2 ,
                     attackCurve : 'exponential'
                 }
             }
@@ -116,7 +116,7 @@ class MainSynth {
         this.render();
     }
 
-    render () {
+    async render () {
         Tone.Transport.bpm.value = this.tempo;
         this.synth.connect(this.gain);
 
@@ -127,36 +127,20 @@ class MainSynth {
         this.seq = new Tone.Sequence((time, note) => {
             this.synth.triggerAttackRelease(note, '8n', time);
             let currentBeat = Tone.Transport.position.split(':');
-            console.log(currentBeat);
-            if (currentBeat[1] === '0'){
+            let num = +currentBeat[1] + 1;
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = 'white';
-                ctx.fillRect(0,0, canvas.width, canvas.height);
-                ctx.font = "148px serif";
-                ctx.fillStyle = 'black';
-                ctx.fillText('1', 110,120);
-            } else if (currentBeat[1] === '1'){
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = 'black';
-                ctx.fillRect(0,0, canvas.width, canvas.height);
-                ctx.font = "148px serif";
-                ctx.fillStyle = 'white';
-                ctx.fillText('2', 110,120);
-            }else if (currentBeat[1] === '2'){
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = 'white';
-                ctx.fillRect(0,0, canvas.width, canvas.height);
-                ctx.fillStyle = 'black';
-                ctx.font = "148px serif";
-                ctx.fillText('3', 110,120);
-            }else if (currentBeat[1] === '3'){
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = 'black';
-                ctx.fillRect(0,0, canvas.width, canvas.height);
-                ctx.font = "148px serif";
-                ctx.fillStyle = 'white';
-                ctx.fillText('4', 110,120);
-            }
+                if (num % 2 === 0){
+                    ctx.fillStyle = 'black';
+                    ctx.fillRect(0,0, canvas.width, canvas.height);
+                    ctx.font = "148px serif";
+                    ctx.fillStyle = 'white';
+                } else {
+                    ctx.fillStyle = 'white';
+                    ctx.fillRect(0,0, canvas.width, canvas.height);
+                    ctx.font = "148px serif";
+                    ctx.fillStyle = 'black';
+                }
+                ctx.fillText(num.toString(), 110,120);
         }, this.note , this.size);
 
         this.seq.start();
@@ -250,7 +234,7 @@ Tone.context.latencyHint = 'fastest';
 function tapMetronome () {
     let elapsedTime = Tone.Transport.seconds;
     Tone.Transport.stop().start();
-        let bpm = (60/elapsedTime).toFixed();
+        let bpm = +(60/elapsedTime).toFixed();
         mySynth.setTempo(bpm);
 }
 
